@@ -21,7 +21,7 @@ if system() == "Android":
     context = PythonService.mService.getApplicationContext()
 
     lib_dir = context.getApplicationInfo().nativeLibraryDir
-    binary_path = os.path.join(lib_dir, "libcloudflaredtunnel.so")
+    binary_path = os.path.join(lib_dir, "libcloudflared.so")
 elif system() == "Linux":
     binary_path = 'cloudflared/android/libs/amd64/cloudflared-linux86'
 
@@ -69,7 +69,7 @@ def start_cloudflared(token=None , url="http://localhost:5000" , env={} , emails
             print("final cmd ", cmd)
 
             # env = os.environ.copy()
-            env["GODEBUG"] = "netdns=cgo+1"
+            if system() == 'Android': env["GODEBUG"] = "netdns=cgo+1"
 
             p = subprocess.Popen(
                 cmd,
